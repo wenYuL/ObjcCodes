@@ -1381,10 +1381,10 @@ struct swift_class_t : objc_class {
 struct category_t {
     const char *name;
     classref_t cls;
-    struct method_list_t *instanceMethods;
-    struct method_list_t *classMethods;
-    struct protocol_list_t *protocols;
-    struct property_list_t *instanceProperties;
+    struct method_list_t *instanceMethods;      // 对象方法
+    struct method_list_t *classMethods;         // 类方法
+    struct protocol_list_t *protocols;          // 协议
+    struct property_list_t *instanceProperties; // 属性
     // Fields below this point are not always present on disk.
     struct property_list_t *_classProperties;
 

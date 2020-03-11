@@ -1405,6 +1405,8 @@ static Class getNonMetaClass(Class metacls, id inst)
 
     total++;
 
+    
+    // 判断是否是NSObject
     // return cls itself if it's already a non-meta class
     if (!metacls->isMetaClass()) return metacls;
 
@@ -1412,6 +1414,7 @@ static Class getNonMetaClass(Class metacls, id inst)
 
     // special case for root metaclass
     // where inst == inst->ISA() == metacls is possible
+    // 判断是否是根元类 只有根元类的isa指针才会指向自己
     if (metacls->ISA() == metacls) {
         Class cls = metacls->superclass;
         assert(cls->isRealized());
@@ -1420,6 +1423,7 @@ static Class getNonMetaClass(Class metacls, id inst)
         if (cls->ISA() == metacls) return cls;
     }
 
+    // 判断类对象
     // use inst if available
     if (inst) {
         Class cls = (Class)inst;

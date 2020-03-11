@@ -16,8 +16,22 @@
 
 @implementation Person
 
+
+
+//+ (BOOL)resolveInstanceMethod:(SEL)sel {
+//    return NO;
+//}
+//
+//- (id)forwardingTargetForSelector:(SEL)aSelector {
+//    return nil;
+//}
+//
+//- (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector {
+//    return nil;
+//}
+
 - (void)dealloc {
-    
+    NSLog(@"到这来了");
 }
 
 @end

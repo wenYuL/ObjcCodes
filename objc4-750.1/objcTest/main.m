@@ -21,14 +21,38 @@ struct one {
 }Test;
 
 
+
+
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
         
-        void (^bl)(void) = ^() {
-            NSLog(@"123");
-        };
         
-        bl();
+        
+//        int nums[] = {23,10,12};
+//        quickSort(nums, 0, 2);
+//        for (int i = 0; i < 3; i ++) {
+//            printf("%d ",nums[i]);
+//        }
+        
+//        Person *p = [[Person alloc]init];
+//        id __weak wp = p;
+        
+//        [p release];
+//        [p retain];
+//        NSLog(@"%ld",[p retainCount]);
+//        NSLog(@"%ld",[p retainCount]);
+//        NSLog(@"%ld",[p retainCount]);
+        
+        
+//        __block int a = 0;
+//        while (a < 10) {
+//            dispatch_async(dispatch_get_global_queue(0, 0), ^{
+//                a ++;
+//            });
+//        }
+//        NSLog(@"%d",a);
+//        sleep(1);
+//        NSLog(@"%d",a);
         
 //        number = @(100.1);
         
@@ -55,3 +79,5 @@ int main(int argc, const char * argv[]) {
     }
     return 0;
 }
+
+
