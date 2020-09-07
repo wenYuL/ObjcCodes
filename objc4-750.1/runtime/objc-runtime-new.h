@@ -57,7 +57,7 @@ public:
 
 
 struct cache_t {
-    struct bucket_t *_buckets;      //方法缓存的哈希通数组指针，
+    struct bucket_t *_buckets;      //方法缓存的哈希桶数组指针，
     mask_t _mask;                   //哈希桶的数量 - 1
     mask_t _occupied;
 
@@ -294,7 +294,7 @@ typedef uintptr_t protocol_ref_t;  // protocol_t *, but unremapped
 #define PROTOCOL_FIXED_UP_MASK (PROTOCOL_FIXED_UP_1 | PROTOCOL_FIXED_UP_2)
 
 struct protocol_t : objc_object {
-    const char *mangledName;
+    const char *mangledName;   //
     struct protocol_list_t *protocols;
     method_list_t *instanceMethods;
     method_list_t *classMethods;
@@ -1379,8 +1379,8 @@ struct swift_class_t : objc_class {
 
 
 struct category_t {
-    const char *name;
-    classref_t cls;
+    const char *name;   // 分类名称
+    classref_t cls;     // 分类的宿主类
     struct method_list_t *instanceMethods;      // 对象方法
     struct method_list_t *classMethods;         // 类方法
     struct protocol_list_t *protocols;          // 协议

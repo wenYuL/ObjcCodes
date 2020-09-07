@@ -276,6 +276,7 @@ void _object_set_associative_reference(id object, void *key, id value, uintptr_t
         AssociationsManager manager;
         AssociationsHashMap &associations(manager.associations());
         disguised_ptr_t disguised_object = DISGUISE(object);
+        // 判断设置的value是否是nil
         if (new_value) {
             // break any existing association.
             AssociationsHashMap::iterator i = associations.find(disguised_object);

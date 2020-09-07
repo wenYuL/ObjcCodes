@@ -7,15 +7,31 @@
 
 #import "Person.h"
 
+typedef void(^block)(void);
+
 // Person.m
 @interface Person ()
 {
 //    NSString *childhoodName;
+    block block_;
 }
+
+@property (nonatomic, copy) NSString *test;
 @end
 
 @implementation Person
 
+
+- (instancetype)init {
+    if (self = [super init]) {
+        
+        block_ = ^ {
+            NSLog(@"%@",self.test);
+        };
+        
+    }
+    return self;
+}
 
 
 //+ (BOOL)resolveInstanceMethod:(SEL)sel {
@@ -30,8 +46,8 @@
 //    return nil;
 //}
 
-- (void)dealloc {
-    NSLog(@"到这来了");
-}
+//- (void)dealloc {
+//    NSLog(@"到这来了");
+//}
 
 @end

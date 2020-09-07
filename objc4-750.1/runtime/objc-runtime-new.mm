@@ -768,10 +768,14 @@ attachCategories(Class cls, category_list *cats, bool flush_caches)
     bool isMeta = cls->isMetaClass();
 
     // fixme rearrange to remove these intermediate allocations
+    // 二维数组
+    // 方法列表
     method_list_t **mlists = (method_list_t **)
         malloc(cats->count * sizeof(*mlists));
+    // 属性列表
     property_list_t **proplists = (property_list_t **)
         malloc(cats->count * sizeof(*proplists));
+    // 协议列表
     protocol_list_t **protolists = (protocol_list_t **)
         malloc(cats->count * sizeof(*protolists));
 
@@ -779,11 +783,13 @@ attachCategories(Class cls, category_list *cats, bool flush_caches)
     int mcount = 0;
     int propcount = 0;
     int protocount = 0;
+    // 宿主类分类的总数
     int i = cats->count;
     bool fromBundle = NO;
-    while (i--) {
+    while (i--) { // 倒叙遍历，最先访问最后编辑的分类
+        // 获取第i个分类
         auto& entry = cats->list[i];
-
+        // 获取方法列表
         method_list_t *mlist = entry.cat->methodsForMeta(isMeta);
         if (mlist) {
             mlists[mcount++] = mlist;
@@ -802,9 +808,11 @@ attachCategories(Class cls, category_list *cats, bool flush_caches)
         }
     }
 
+    // 获取宿主类当中的rw数据，其中包含宿主类的方法列表信息
     auto rw = cls->data();
 
     prepareMethodLists(cls, mlists, mcount, NO, fromBundle);
+    // 给宿主类添加mcount个方法
     rw->methods.attachLists(mlists, mcount);
     free(mlists);
     if (flush_caches  &&  mcount > 0) flushCaches(cls);

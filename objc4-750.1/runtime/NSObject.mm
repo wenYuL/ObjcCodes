@@ -271,6 +271,7 @@ template <HaveOld haveOld, HaveNew haveNew,
 static id 
 storeWeak(id *location, objc_object *newObj)
 {
+    // haveOld 为false haveNew为true
     assert(haveOld  ||  haveNew);
     if (!haveNew) assert(newObj == nil);
 
@@ -289,7 +290,9 @@ storeWeak(id *location, objc_object *newObj)
     } else {
         oldTable = nil;
     }
+    
     if (haveNew) {
+        //
         newTable = &SideTables()[newObj];
     } else {
         newTable = nil;
@@ -414,6 +417,7 @@ objc_initWeak(id *location, id newObj)
         return nil;
     }
 
+    // 传入参数分别为 false  true true
     return storeWeak<DontHaveOld, DoHaveNew, DoCrashIfDeallocating>
         (location, (objc_object*)newObj);
 }
@@ -1233,9 +1237,11 @@ objc_object::clearDeallocating_slow()
 
     SideTable& table = SideTables()[this];
     table.lock();
+    // 清除weak引用
     if (isa.weakly_referenced) {
         weak_clear_no_lock(&table.weak_table, (id)this);
     }
+    // 清除弱引用计数
     if (isa.has_sidetable_rc) {
         table.refcnts.erase(this);
     }

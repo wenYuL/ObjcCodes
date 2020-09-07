@@ -314,6 +314,7 @@ weak_entry_for_referent(weak_table_t *weak_table, objc_object *referent)
 
     if (!weak_entries) return nil;
 
+    // 通过hash查找
     size_t begin = hash_pointer(referent) & weak_table->mask;
     size_t index = begin;
     size_t hash_displacement = 0;
@@ -426,10 +427,10 @@ weak_register_no_lock(weak_table_t *weak_table, id referent_id,
 
     // now remember it and where it is being stored
     weak_entry_t *entry;
-    if ((entry = weak_entry_for_referent(weak_table, referent))) {
+    if ((entry = weak_entry_for_referent(weak_table, referent))) {  // 之前存在entry
         append_referrer(entry, referrer);
     } 
-    else {
+    else {  // 新建entry
         weak_entry_t new_entry(referent, referrer);
         weak_grow_maybe(weak_table);
         weak_entry_insert(weak_table, &new_entry);
@@ -463,6 +464,7 @@ weak_clear_no_lock(weak_table_t *weak_table, id referent_id)
 {
     objc_object *referent = (objc_object *)referent_id;
 
+    // 哈希查找取出对应的弱引用表中的hash表
     weak_entry_t *entry = weak_entry_for_referent(weak_table, referent);
     if (entry == nil) {
         /// XXX shouldn't happen, but does with mismatched CF/objc
@@ -487,6 +489,7 @@ weak_clear_no_lock(weak_table_t *weak_table, id referent_id)
         objc_object **referrer = referrers[i];
         if (referrer) {
             if (*referrer == referent) {
+                // 把指针置为nil
                 *referrer = nil;
             }
             else if (*referrer) {
@@ -499,7 +502,7 @@ weak_clear_no_lock(weak_table_t *weak_table, id referent_id)
             }
         }
     }
-    
+    // 移除这个弱引用表
     weak_entry_remove(weak_table, entry);
 }
 

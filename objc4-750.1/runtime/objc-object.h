@@ -399,11 +399,12 @@ objc_object::rootIsDeallocating()
 inline void 
 objc_object::clearDeallocating()
 {
+    // 指针型isa 直接操作sidetable中的
     if (slowpath(!isa.nonpointer)) {
         // Slow path for raw pointer isa.
         sidetable_clearDeallocating();
     }
-    else if (slowpath(isa.weakly_referenced  ||  isa.has_sidetable_rc)) {
+    else if (slowpath(isa.weakly_referenced  ||  isa.has_sidetable_rc)) { // 非指针型isa
         // Slow path for non-pointer isa with weak refs and/or side table data.
         clearDeallocating_slow();
     }
@@ -415,8 +416,10 @@ objc_object::clearDeallocating()
 inline void
 objc_object::rootDealloc()
 {
+    // 判断是不是小对象
     if (isTaggedPointer()) return;  // fixme necessary?
 
+    
     if (fastpath(isa.nonpointer  &&  
                  !isa.weakly_referenced  &&  
                  !isa.has_assoc  &&  
